@@ -9,7 +9,7 @@ metadata:
   namespace: flex
 spec:
   image: "{{ image }}"
-  schedule: "*/15 * * * *"
+  schedule: "*/5 * * * *"
   env:
     - name: NADA_URL
       value: data.nav.no
@@ -20,4 +20,4 @@ spec:
   accessPolicy:
     outbound:
       external:
-        - host: datamarkedsplassen.intern.dev.nav.no
+        - host: data.nav.no

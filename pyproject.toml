@@ -1,0 +1,25 @@
+[tool.poetry]
+name = "flex-datafortelling"
+version = "0.1.0"
+description = ""
+authors = ["NAV-IT"]
+readme = "README.md"
+license = "MIT"
+
+[tool.poetry.dependencies]
+python = "^3.12"
+nbformat = "^5.9.2"
+nbclient = "^0.9.0"
+ipython = "^8.21.0"
+ipykernel = "^6.29.0"
+python-dotenv = "^1.0.1"
+matplotlib = "^3.8.2"
+google-cloud-bigquery = "^3.17.1"
+pandas = "^2.2.0"
+db-dtypes = "^1.2.0"
+pyyaml = "^6.0.1"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

@@ -20,4 +20,4 @@ spec:
   accessPolicy:
     outbound:
       external:
-        - host: data.nav.no
+        - host: nada.intern.nav.no

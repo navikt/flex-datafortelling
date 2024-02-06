@@ -6,7 +6,7 @@ metadata:
   labels:
     team: flex
   name: flex-datafortelling
-  namespace: nada
+  namespace: flex
 spec:
   image: "{{ image }}"
   schedule: "0 1 * * *"

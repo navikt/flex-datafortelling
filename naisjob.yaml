@@ -1,0 +1,23 @@
+apiVersion: nais.io/v1
+kind: Naisjob
+metadata:
+  annotations:
+    nais.io/read-only-file-system: "false"
+  labels:
+    team: flex
+  name: flex-datafortelling
+  namespace: nada
+spec:
+  image: "{{ image }}"
+  schedule: "0 1 * * *"
+  env:
+    - name: NADA_URL
+      value: data.nav.no
+    - name: QUARTO_ID
+      value: 87332165-41ff-49bc-bd34-a8747cefb3db # https://data.intern.nav.no/story/87332165-41ff-49bc-bd34-a8747cefb3db
+  envFrom:
+    - secret: nada-token
+  accessPolicy:
+    outbound:
+      external:
+        - host: datamarkedsplassen.intern.dev.nav.no

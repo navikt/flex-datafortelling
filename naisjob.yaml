@@ -16,7 +16,7 @@ spec:
     - name: QUARTO_ID
       value: 87332165-41ff-49bc-bd34-a8747cefb3db # https://data.intern.nav.no/story/87332165-41ff-49bc-bd34-a8747cefb3db
   envFrom:
-    - secret: nada-token
+    - secret: flex-nada-token
   accessPolicy:
     outbound:
       external:

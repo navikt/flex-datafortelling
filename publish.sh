@@ -22,7 +22,7 @@ set -e
 #http_status=$(echo "$response" | tr -d '\n' | sed -e 's/.*HTTP_STATUS://')
 
 date > index.html
-quarto render index.qmd
+# quarto render index.qmd
 response=$(curl -X PUT -F index.html=@index.html "https://${NADA_URL}/quarto/update/${QUARTO_ID}" -H "Authorization:Bearer ${NADA_TOKEN}")
 
 # Store the status code of the last executed command

@@ -17,35 +17,17 @@ RUN groupadd -g 1069 python && \
 
 WORKDIR /home/python
 
-
-# COPY pyproject.toml .
-#COPY poetry.lock .
-
-
-
-# COPY requirements.txt .
 RUN pip install poetry
 
-#RUN pip install -r requirements.txt
-# Correctly copy files to the intended directory
-
-# Install project dependencies without root and dev packages
-
-# RUN poetry install --no-root --no-dev
-# RUN ipython kernel install --name "python3"
 RUN python3 -m pip install poetry
 RUN poetry self add poetry-plugin-export
 
 COPY pyproject.toml .
 COPY poetry.lock .
 
-
 RUN poetry export -f requirements.txt --output requirements.txt
 
-
-
 RUN python -m pip install --no-cache-dir --upgrade pip wheel
-# COPY requirements.txt .
 RUN python -m pip install --no-cache-dir -r requirements.txt
 RUN ipython kernel install --name "python3"
 COPY publish.sh .

@@ -17,7 +17,7 @@ RUN groupadd -g 1069 python && \
 
 WORKDIR /home/python
 
-COPY publish.sh .
+
 # COPY pyproject.toml .
 #COPY poetry.lock .
 
@@ -48,7 +48,7 @@ RUN python -m pip install --no-cache-dir --upgrade pip wheel
 # COPY requirements.txt .
 RUN python -m pip install --no-cache-dir -r requirements.txt
 RUN ipython kernel install --name "python3"
-
+COPY publish.sh .
 COPY index.qmd .
 
 ENV DENO_DIR=/home/python/deno

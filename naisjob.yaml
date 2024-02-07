@@ -9,7 +9,7 @@ metadata:
   namespace: flex
 spec:
   image: "{{ image }}"
-  schedule: "0 0 * * *"
+  schedule: "0 1 * * *"
   env:
     - name: NADA_URL
       value: data.nav.no

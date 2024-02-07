@@ -22,3 +22,5 @@ spec:
       external:
         - host: nada.intern.nav.no
         - host: data.nav.no
+        - host: datamarkedsplassen.intern.dev.nav.no
+        - host: datamarkedsplassen.intern.nav.no

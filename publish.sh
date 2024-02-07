@@ -7,6 +7,7 @@ set -e
 # json_payload=$(jq -n --arg cmd "$curl_cmd" '{"log": $cmd}')
 # https://data.intern.nav.no/story/87332165-41ff-49bc-bd34-a8747cefb3db
 # curl -X POST -d "$json_payload" -H 'Content-Type: application/json' http://localhost:19880/
+
 quarto render index.qmd
 
 

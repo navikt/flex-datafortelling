@@ -21,3 +21,4 @@ spec:
     outbound:
       external:
         - host: nada.intern.nav.no
+        - host: data.nav.no

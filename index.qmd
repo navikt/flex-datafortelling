@@ -1,0 +1,14 @@
+---
+title: "Hello world"
+format:
+    html:
+        self-contained: true
+---
+
+> Testing out Quarto
+
+```{python}
+from datetime import datetime
+
+print(datetime.now())
+```

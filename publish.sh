@@ -8,8 +8,6 @@ set -e
 # https://data.intern.nav.no/story/87332165-41ff-49bc-bd34-a8747cefb3db
 # curl -X POST -d "$json_payload" -H 'Content-Type: application/json' http://localhost:19880/
 
-if 
-
 # Assuming you have an environment variable named ENVIRONMENT
 if [ "$ENVIRONMENT" == "dev" ]; then
     quarto render dev.qmd --output index.html

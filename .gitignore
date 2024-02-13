@@ -8,3 +8,5 @@ output/
 index_files/figure-html/
 
 /.quarto/
+
+.DS_Store

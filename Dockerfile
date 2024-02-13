@@ -39,7 +39,8 @@ ENV XDG_CACHE_HOME=/home/python/cache
 ENV XDG_DATA_HOME=/home/python/share
 
 COPY publish.sh .
-COPY index.qmd .
+COPY dev.qmd .
+COPY prod.qmd .
 COPY index.py .
 RUN mkdir output
 

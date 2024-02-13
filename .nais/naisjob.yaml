@@ -1,0 +1,44 @@
+apiVersion: nais.io/v1
+kind: Naisjob
+metadata:
+  annotations:
+    nais.io/read-only-file-system: "false"
+  labels:
+    team: flex
+  name: flex-datafortelling
+  namespace: flex
+spec:
+  image: "{{ image }}"
+  schedule: {{schedule}}
+  env:
+    - name: ENVIRONMENT
+      value: {{environment}}
+    - name: NADA_URL
+      value: {{nadaUrl}}
+    - name: QUARTO_ID
+      value: {{quartoId}}
+    - name: GCP_TEAM_PROJECT_ID
+      value: {{gcpProjectId}}
+  envFrom:
+    - secret: flex-nada-token
+  accessPolicy:
+    outbound:
+      external:
+        - host: {{nadaUrl}}
+  gcp:
+    permissions:
+      - resource:
+          apiVersion: resourcemanager.cnrm.cloud.google.com/v1beta1
+          kind: Project
+          name: {{gcProjectId}}
+        role: roles/bigquery.readSessionUser
+      - resource:
+          apiVersion: resourcemanager.cnrm.cloud.google.com/v1beta1
+          kind: Project
+          name: {{gcProjectId}}
+        role: roles/bigquery.dataViewer
+      - resource:
+          apiVersion: resourcemanager.cnrm.cloud.google.com/v1beta1
+          kind: Project
+          name: {{gcProjectId}}
+        role: roles/bigquery.jobUser

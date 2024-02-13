@@ -35,6 +35,9 @@ credentials_path = os.path.expanduser('~/.config/gcloud/application_default_cred
 
 authenticated_locally = os.path.isfile(credentials_path)
 running_in_dev = os.getenv('ENVIRONMENT', '').lower() == 'dev'
+running_in_prod = os.getenv('ENVIRONMENT', '').lower() == 'prod'
+
+
 
 
 if authenticated_locally or running_in_dev:  # Check if the file exists

@@ -17,8 +17,9 @@ elif [ "$ENVIRONMENT" == "prod" ]; then
     quarto render prod.qmd --output index.html
 else
     echo "assuming it is running locally"
-    quarto render dev.qmd --output dev.html
-    quarto render prod.qmd --output prod.html
+    # quarto render dev.qmd --output dev.html
+    # quarto render prod.qmd --output prod.html
+    quarto render prod.qmd --output index.html
 fi
 
 

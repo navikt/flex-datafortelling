@@ -1,5 +1,5 @@
 schedule: "0 0 * * *"
-nadaUrl: data.nav.no # ikke 100% sikker på denne
+nadaUrl: data.nav.no
 quartoId: 87332165-41ff-49bc-bd34-a8747cefb3db
 gcpProjectId: flex-prod-af40
 environment: prod

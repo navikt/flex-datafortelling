@@ -1,17 +1,14 @@
----
-title: "Hello world"
-format:
-    html:
-        self-contained: true
----
+# %% [markdown]
+# # Hello World in a Jupyter-compatible Python Script
 
-> Testing out Quarto
+# %% [code]
+print("Hello, World!")
 
-```{python}
-from datetime import datetime
-
-print(datetime.now())
-
+# %% [markdown]
+# This is another markdown cell.
+# %% [code]
+#| echo: true
+# the above determines wether code is shown or not
 import matplotlib.pyplot as plt
 
 # Data for plotting
@@ -28,14 +25,15 @@ plt.ylabel('y-axis')
 
 # Show the plot
 plt.show()
-
+# %% [code]
+#| echo: false
 import os
 from google.cloud import bigquery
 credentials_path = os.path.expanduser('~/.config/gcloud/application_default_credentials.json')
 
 authenticated_locally = os.path.isfile(credentials_path)
 running_in_dev = os.getenv('ENVIRONMENT', '').lower() == 'dev'
-
+running_in_prod = os.getenv('ENVIRONMENT', '').lower() == 'prod'
 
 if authenticated_locally or running_in_dev:  # Check if the file exists
     if authenticated_locally:
@@ -48,11 +46,14 @@ if authenticated_locally or running_in_dev:  # Check if the file exists
 
     query_job = bigquery_client.query(query)
     df = query_job.to_dataframe()
-    print(f'dataframe length: {len(df)}')
 
     df.head()
+    print(f'dataframe length: {len(df)}')
 else:
 
     print("Credentials file not found. Functionality requiring credentials will be skipped.")
 
-```
+# %% [code]
+import json
+# %% [markdown]
+# hello world

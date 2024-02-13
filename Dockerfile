@@ -40,7 +40,8 @@ ENV XDG_DATA_HOME=/home/python/share
 
 COPY publish.sh .
 COPY index.qmd .
-
+COPY index.py .
+RUN mkdir output
 
 RUN chown python:python /home/python -R
 USER python

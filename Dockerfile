@@ -6,7 +6,7 @@ RUN apt-get update && apt-get install -yq --no-install-recommends \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
-# for å installere quarto for arm (apple sillicon)
+# for å installere quarto for arm (f.eks. apple sillicon) i docker bygg
 # send inn dette argumentet til byggekommandoen: --build-arg CPU=arm64
 ARG CPU=amd64
 
@@ -22,17 +22,12 @@ RUN groupadd -g 1069 python && \
 
 WORKDIR /home/python
 
-
-# install python related dependencies
 RUN pip install poetry
 RUN python3 -m pip install poetry
-RUN poetry self add poetry-plugin-export
 COPY pyproject.toml .
 COPY poetry.lock .
-RUN poetry export -f requirements.txt --output requirements.txt
-RUN python -m pip install --no-cache-dir --upgrade pip wheel
-RUN python -m pip install --no-cache-dir -r requirements.txt
-RUN ipython kernel install --name "python3"
+RUN poetry config virtualenvs.create false
+RUN poetry install
 
 ENV DENO_DIR=/home/python/deno
 ENV XDG_CACHE_HOME=/home/python/cache
@@ -42,9 +37,7 @@ COPY publish.sh .
 COPY dev.qmd .
 COPY prod.qmd .
 COPY index.py .
-RUN mkdir output
 
 RUN chown python:python /home/python -R
 USER python
-# dsflsdfl
 CMD ["./publish.sh"]

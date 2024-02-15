@@ -10,6 +10,12 @@ metadata:
 spec:
   image: "{{ image }}"
   schedule: {{schedule}}
+  resources:
+    limits:
+      memory: {{memory}}
+    requests:
+      cpu: {{cpu}}
+      memory: {{memory}}
   env:
     - name: ENVIRONMENT
       value: {{environment}}

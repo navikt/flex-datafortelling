@@ -9,7 +9,7 @@ recommended-settings:
 	poetry --version && poetry config virtualenvs.in-project true
 
 macos-bootstrap: # Setter opp miljø for quarto-rendring
-	python3.12 --version || echo 'python3.12 is not installed, press any key to contiue' && read
+	python3.12 --version || echo 'python3.12 is not installed, you will need it to install it' && read
 	pipx --version || brew install pipx && pipx ensurepath
 	poetry --version || pipx install poetry
 	quarto --version || brew install quarto

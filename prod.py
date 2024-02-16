@@ -1,5 +1,3 @@
-# jupyter:
-# title: "My Quarto Document"
 # %% [markdown]
 # # Hello World in a Jupyter-compatible Python Script
 
@@ -9,7 +7,6 @@ print("Hello, World!")
 # %% [markdown]
 # This is another markdown cell.
 # %% [code]
-#| echo: true
 # the above determines wether code is shown or not
 import matplotlib.pyplot as plt
 
@@ -28,34 +25,48 @@ plt.ylabel('y-axis')
 # Show the plot
 plt.show()
 # %% [code]
-#| echo: false
+from datetime import datetime
+
 import os
 from google.cloud import bigquery
+
 credentials_path = os.path.expanduser('~/.config/gcloud/application_default_credentials.json')
 
 authenticated_locally = os.path.isfile(credentials_path)
 running_in_dev = os.getenv('ENVIRONMENT', '').lower() == 'dev'
 running_in_prod = os.getenv('ENVIRONMENT', '').lower() == 'prod'
 
-if authenticated_locally or running_in_dev:  # Check if the file exists
+if authenticated_locally or running_in_prod:  # Check if the file exists
     if authenticated_locally:
         os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = credentials_path
-    bigquery_client = bigquery.Client(project='flex-dev-2b16')
+
+    bigquery_client = bigquery.Client(project='flex-prod-af40')
 
     query = """
-    SELECT soknadstype FROM `flex-dev-2b16.korrigering_metrikk.andre_inntektskilder` LIMIT 10
+
+
+    SELECT *
+    FROM `flex-prod-af40.flex_dataset.sykepengesoknad_sporsmal_svar_view`
+    limit 100
     """
 
     query_job = bigquery_client.query(query)
     df = query_job.to_dataframe()
 
-    df.head()
     print(f'dataframe length: {len(df)}')
+
+    df.head()
 else:
 
-    print("Credentials file not found. Functionality requiring credentials will be skipped.")
+    print(
+        "Credentials file not found OR not running in prod. Functionality requiring credentials/prod env will be skipped.")
 
 # %% [code]
-import json
+print(datetime.now())
 # %% [markdown]
 # hello world
+
+
+
+
+

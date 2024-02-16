@@ -34,9 +34,10 @@ ENV XDG_CACHE_HOME=/home/python/cache
 ENV XDG_DATA_HOME=/home/python/share
 
 COPY publish.sh .
+COPY _quarto.yml .
 COPY dev.qmd .
 COPY prod.qmd .
-COPY index.py .
+COPY prod.py .
 
 RUN chown python:python /home/python -R
 USER python

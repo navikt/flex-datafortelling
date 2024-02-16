@@ -10,8 +10,7 @@ recommended-settings:
 
 macos-bootstrap: # Setter opp miljø for quarto-rendring
 	python3.12 --version || echo 'python3.12 is not installed, press any key to contiue' && read
-	poetry --version || brew install pipx
-	poetry --version || pipx ensurepath
+	pipx --version || brew install pipx && pipx ensurepath
 	poetry --version || pipx install poetry
 	quarto --version || brew install quarto
 	gcloud --version || brew install --cask google-cloud-sdk

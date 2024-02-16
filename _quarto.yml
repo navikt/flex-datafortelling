@@ -1,0 +1,9 @@
+#project: må forandre publish før du forandrer denne
+#  output-dir: output
+
+format:
+  html:
+    embed-resources: true
+    code-folding: true
+execute:
+  echo: false

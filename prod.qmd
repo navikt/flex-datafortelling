@@ -37,6 +37,8 @@ authenticated_locally = os.path.isfile(credentials_path)
 running_in_dev = os.getenv('ENVIRONMENT', '').lower() == 'dev'
 running_in_prod = os.getenv('ENVIRONMENT', '').lower() == 'prod'
 
+
+
 if authenticated_locally or running_in_prod:  # Check if the file exists
     if authenticated_locally:
         os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = credentials_path
@@ -44,17 +46,37 @@ if authenticated_locally or running_in_prod:  # Check if the file exists
     bigquery_client = bigquery.Client(project='flex-prod-af40')
 
     query = """
-    SELECT *
-    FROM `flex-prod-af40.flex_dataset.sykepengesoknad_sporsmal_svar_view`
-    LIMIT 100
+ 
+
+    WITH data_in_last_7_days AS (
+      SELECT svar
+      FROM `flex-prod-af40.flex_dataset.flexjar_feedback_view`
+      WHERE opprettet >= TIMESTAMP(DATE_SUB(CURRENT_DATE(), INTERVAL 7 DAY))
+      and feedbackId = 'ditt-sykefravaer-fant-du'
+    ),
+
+    no_counts AS (
+      SELECT COUNT(*) AS total,
+      COUNTIF(svar = 'NEI') AS nei_count,
+        COUNTIF(svar = 'FORBEDRING') AS forbedring_count
+      FROM data_in_last_7_days
+    )
+
+
+
+    SELECT ROUND(((nei_count + forbedring_count)  / total * 100), 1) AS percentage
+    FROM no_counts
     """
 
     query_job = bigquery_client.query(query)
-    df = query_job.to_dataframe()
+    result = query_job.result()
 
-    print(f'dataframe length: {len(df)}')
+    # Hvis spørringen din returnerer en rad, kan du hente denne raden
+    for row in result:
+        nei_forbedring_siste_7 = row.percentage
 
-    df.head()
+    print(f'Prosent siste 7: {nei_forbedring_siste_7}')
+
 else:
 
     print("Credentials file not found OR not running in prod. Functionality requiring credentials/prod env will be skipped.")

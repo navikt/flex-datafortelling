@@ -44,6 +44,11 @@ Generer datafortelling lokalt med:
 make render
 ```
 
+## Datafortelling på data.nais.io
+Dev: https://data.intern.dev.nav.no/story/4eff47a7-b3aa-4777-93ff-9a18edba2415/index.html
+Prod: 
+
+
 ## NAIS: tips og triks
 
 For å trigge en kjøring av naisjoben kan man kjøre noe slikt: `kubectl create job --from=cronjobs/flex-datafortelling flex-testjobb-NN -n flex` NN kunne vært et tall, det viktigste er at alle adhoc jobber må ha unike navn.

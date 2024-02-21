@@ -33,3 +33,6 @@ preview: login ## Rendrer Quarto datafortelling til lokal webserver ved å lytte
 
 preview_no_execute: login  ## Samme som preview, men kjører ikke Python-koden.
 	poetry run quarto preview prod.qmd -o index.html --no-execute
+
+format: ## Formater koden med Black
+	poetry run black .

@@ -5,7 +5,7 @@ metadata:
     nais.io/read-only-file-system: "false"
   labels:
     team: flex
-  name: {{app}}
+  name: flex-datafortelling
   namespace: flex
 spec:
   image: {{image}}

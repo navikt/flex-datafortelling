@@ -27,7 +27,6 @@ jobs:
     uses: navikt/flex-github-actions-workflows/.github/workflows/nais-deploy-dev-og-prod.yml@main
     with:
       image: ${{ needs.build-and-push.outputs.image }}
-      app: flex-datafortelling
       prod-vars: nais/prod.yaml
       dev-vars: nais/dev.yaml
       nais-template: nais/naisjob.yaml

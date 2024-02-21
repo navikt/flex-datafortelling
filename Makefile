@@ -5,7 +5,6 @@ root_dir := $(dir $(abspath $(lastword $(MAKEFILE_LIST))))
 help:
 	@echo "$$(grep -hE '^\S+:.*##' $(MAKEFILE_LIST) | sed -e 's/:.*##\s*/:/' -e 's/^\(.\+\):\(.*\)/\\x1b[36m\1\\x1b[m:\2/' | column -c2 -t -s :)"
 
-
 macos-bootstrap: ## Installer avhengigheter for macOS.
 	@python3.12 --version || { echo 'python3.12 is not installed, you will need it to install it' && read; }
 	@pipx --version || { brew install pipx && pipx ensurepath; }
@@ -17,9 +16,9 @@ update: macos-bootstrap ## Oppdaterer avhengigheter.
 	poetry update
 
 login: ## Sjekker om man er autentisert mot gcloud og logger inn hvis ikke.
-	gcloud auth print-identity-token >/dev/null 2>&1 || gcloud auth login --update-adc
+	@gcloud auth print-identity-token >/dev/null 2>&1 || gcloud auth login --update-adc
 
-macos-setup: macos-bootstrap login ## Setter opp miljø for å rendre datafortellingen.
+macos-setup: macos-bootstrap update login ## Setter opp miljø for å rendre datafortellingen.
 
 recommended-settings: ## Konfigurerer innstillinger for Poetry.
 	poetry --version && poetry config virtualenvs.in-project true

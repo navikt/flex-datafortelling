@@ -11,7 +11,6 @@ macos-bootstrap: ## Installer avhengigheter for macOS.
 	@poetry --version || pipx install poetry
 	@quarto --version || brew install quarto
 	@gcloud --version || brew install --cask google-cloud-sdk
-	poetry install
 
 update: macos-bootstrap ## Oppdaterer avhengigheter.
 	poetry update

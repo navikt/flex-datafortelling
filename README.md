@@ -50,9 +50,9 @@ Generer datafortelling lokalt med:
 make render
 ```
 
-## Datafortelling på data.nais.io
-Dev: https://data.intern.dev.nav.no/story/4eff47a7-b3aa-4777-93ff-9a18edba2415/index.html
-Prod: 
+## Datafortelling på dataplattformen
+Dev: https://data.intern.dev.nav.no/story/4eff47a7-b3aa-4777-93ff-9a18edba2415
+Prod:  https://data.intern.nav.no/story/87332165-41ff-49bc-bd34-a8747cefb3db
 
 
 ## NAIS: tips og triks

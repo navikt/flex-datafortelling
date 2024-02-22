@@ -13,10 +13,9 @@ make macos-opinionated-setup
 
 Kommandoene under er skrevet for macOS da de krever at [Homebrew](https://brew.sh/) finnes.
 
-Setter opp miljø for å rendre datafortellingen.
-
+Installerer avhengigheter for macOS.
 ```shell
-make macos-setup
+make macos-bootstrap
 ```
 
 ## Anbefalte instillinger

@@ -24,7 +24,7 @@ login: ## Sjekker om man er autentisert mot gcloud og logger inn hvis ikke.
 recommended-settings: ## Konfigurer poetry med virtualenvs.in-project true
 	poetry --version && poetry config virtualenvs.in-project true
 
-macos-opinionated-setup: macos-bootstrap recommended-settings install ## Setter opp miljø for å rendre datafortellingen.
+macos-opinionated-setup: macos-bootstrap recommended-settings install login ## Setter opp miljø for å rendre datafortellingen.
 
 render: login ## Rendrer datafortelling til index.html og åpner den i nettleser.
 	poetry run quarto render prod.qmd -o index.html

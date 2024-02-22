@@ -35,8 +35,7 @@ ENV XDG_DATA_HOME=/home/python/share
 
 COPY publish.sh .
 COPY _quarto.yml .
-COPY dev.qmd .
-COPY prod.qmd .
+COPY stories .
 
 RUN chown python:python /home/python -R
 USER python

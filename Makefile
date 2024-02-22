@@ -27,14 +27,14 @@ recommended-settings: ## Konfigurer poetry med virtualenvs.in-project true
 macos-opinionated-setup: macos-bootstrap recommended-settings install login ## Setter opp miljø for å rendre datafortellingen.
 
 render: login ## Rendrer datafortelling til index.html og åpner den i nettleser.
-	poetry run quarto render prod.qmd -o index.html
+	poetry run quarto render stories/prod/index.qmd -o index.html
 	open index.html
 
 preview: login ## Rendrer Quarto datafortelling til lokal webserver ved å lytte på endringer i index.qmd.
-	rm -rf .quarto && poetry run quarto preview prod.qmd -o index.html
+	rm -rf .quarto && poetry run quarto preview stories/prod/index.qmd -o index.html
 
 preview_no_execute: login  ## Samme som preview, men kjører ikke Python-koden.
-	poetry run quarto preview prod.qmd -o index.html --no-execute
+	poetry run quarto preview stories/prod/index.qmd -o index.html --no-execute
 
 format: ## Formater koden med Black
 	poetry run black .

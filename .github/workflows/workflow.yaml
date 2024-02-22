@@ -31,3 +31,14 @@ jobs:
       dev-vars: nais/dev.yaml
       nais-template: nais/naisjob.yaml
     secrets: inherit
+
+  nais-oneoff-deploy:
+    needs: [build-and-push]
+    uses: navikt/flex-github-actions-workflows/.github/workflows/nais-deploy-dev-og-prod.yml@main
+    with:
+      image: ${{ needs.build-and-push.outputs.image }}
+      prod-vars: nais/prod.yaml
+      dev-vars: nais/dev.yaml
+      nais-template: nais/naisjob.yaml
+      extra-vars: ",run-on-deploy=true"
+    secrets: inherit

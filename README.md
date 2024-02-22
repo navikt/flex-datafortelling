@@ -2,14 +2,20 @@
 
 En naisjobb for å genere en quarto-basert datafortelling.
 
+
+## Opinionated setup som installerer avhengigheter på mac og konfigurerer innstillinger
+Obs: Denne vil sette globale poetry instillinger for virtualenvs i projektfolderen.
+```shell
+make macos-opinionated-setup
+```
+
 ## Installer avhengigheter
 
 Kommandoene under er skrevet for macOS da de krever at [Homebrew](https://brew.sh/) finnes.
 
-Setter opp miljø for å rendre datafortellingen.
-
+Installerer avhengigheter for macOS.
 ```shell
-make macos-setup
+make macos-bootstrap
 ```
 
 ## Anbefalte instillinger

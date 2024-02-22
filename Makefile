@@ -12,16 +12,19 @@ macos-bootstrap: ## Installer avhengigheter for macOS.
 	@quarto --version || brew install quarto
 	@gcloud --version || brew install --cask google-cloud-sdk
 
-update: macos-bootstrap ## Oppdaterer avhengigheter.
+update: ## Oppdaterer avhengigheter.
 	poetry update
+
+install: ## Installerer avhengigheter.
+	poetry install
 
 login: ## Sjekker om man er autentisert mot gcloud og logger inn hvis ikke.
 	@gcloud auth print-identity-token >/dev/null 2>&1 || gcloud auth login --update-adc
 
-macos-setup: macos-bootstrap login ## Setter opp miljø for å rendre datafortellingen.
-
 recommended-settings: ## Konfigurer poetry med virtualenvs.in-project true
 	poetry --version && poetry config virtualenvs.in-project true
+
+macos-opinionated-setup: macos-bootstrap recommended-settings install login ## Setter opp miljø for å rendre datafortellingen.
 
 render: login ## Rendrer datafortelling til index.html og åpner den i nettleser.
 	poetry run quarto render prod.qmd -o index.html

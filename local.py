@@ -35,10 +35,9 @@ credentials_path = os.path.expanduser(
 )
 
 authenticated_locally = os.path.isfile(credentials_path)
-running_in_dev = os.getenv("ENVIRONMENT", "").lower() == "dev"
-running_in_prod = os.getenv("ENVIRONMENT", "").lower() == "prod"
 
-if authenticated_locally or running_in_prod:  # Check if the file exists
+
+if authenticated_locally:  # Check if the file exists
     if authenticated_locally:
         os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = credentials_path
 

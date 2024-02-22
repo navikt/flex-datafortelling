@@ -69,30 +69,3 @@ else:
 
     print("Credentials file not found OR not running in dev. Functionality requiring credentials/devenv will be skipped.")
 
-
-if authenticated_locally or running_in_prod:  # Check if the file exists
-    if authenticated_locally:
-        os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = credentials_path
-
-    bigquery_client = bigquery.Client(project='flex-prod-af40')
-
-    query = """
- 
-
-    SELECT *
-    FROM `flex-prod-af40.flex_dataset.sykepengesoknad_sporsmal_svar_view`
-    limit 100
-    """
-
-    query_job = bigquery_client.query(query)
-    df = query_job.to_dataframe()
-
-    
-    print(f'dataframe length: {len(df)}')
-
-    df.head()
-else:
-
-    print("Credentials file not found OR not running in prod. Functionality requiring credentials/prod env will be skipped.")
-
-```

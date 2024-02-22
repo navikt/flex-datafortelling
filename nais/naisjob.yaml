@@ -5,11 +5,13 @@ metadata:
     nais.io/read-only-file-system: "false"
   labels:
     team: flex
-  name: flex-datafortelling
+  name: flex-datafortelling{{#if run-on-deploy}}-run-on-deploy{{/if}}
   namespace: flex
 spec:
   image: {{image}}
+  {{#unless run-on-deploy}}
   schedule: "0 0 * * *"
+  {{/unless}}
   resources:
     limits:
       memory: {{memory}}

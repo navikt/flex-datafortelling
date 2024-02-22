@@ -34,8 +34,8 @@ from google.cloud import bigquery
 credentials_path = os.path.expanduser('~/.config/gcloud/application_default_credentials.json')
 
 authenticated_locally = os.path.isfile(credentials_path)
-running_in_dev = os.getenv('ENVIRONMENT', '').lower() == 'dev'
-running_in_prod = os.getenv('ENVIRONMENT', '').lower() == 'prod'
+running_in_dev = os.getenv('NAIS_CLUSTER_NAME', '').lower() == 'dev-gcp'
+running_in_prod = os.getenv('NAIS_CLUSTER_NAME', '').lower() == 'prod-gcp'
 
 
 

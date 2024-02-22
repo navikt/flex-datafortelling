@@ -37,7 +37,6 @@ COPY publish.sh .
 COPY _quarto.yml .
 COPY dev.qmd .
 COPY prod.qmd .
-COPY prod.py .
 
 RUN chown python:python /home/python -R
 USER python

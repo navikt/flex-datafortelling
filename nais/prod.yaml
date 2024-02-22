@@ -1,5 +1,6 @@
 cpu: 500m
 memory: 512Mi
+gcpProjectId: flex-prod-af40
 external-host:
   - data.nav.no
 env:

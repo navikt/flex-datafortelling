@@ -1,5 +1,6 @@
 cpu: 100m
 memory: 512Mi
+gcpProjectId: flex-dev-2b16
 external-host:
   - data.intern.dev.nav.no
 env:

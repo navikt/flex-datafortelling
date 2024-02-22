@@ -8,8 +8,8 @@ metadata:
   name: flex-datafortelling
   namespace: flex
 spec:
-  image: "{{ image }}"
-  schedule: {{schedule}}
+  image: {{image}}
+  schedule: "0 0 * * *"
   resources:
     limits:
       memory: {{memory}}
@@ -17,20 +17,18 @@ spec:
       cpu: {{cpu}}
       memory: {{memory}}
   env:
-    - name: ENVIRONMENT
-      value: {{environment}}
-    - name: NADA_URL
-      value: {{nadaUrl}}
-    - name: QUARTO_ID
-      value: {{quartoId}}
-    - name: GCP_TEAM_PROJECT_ID
-      value: {{gcpProjectId}}
+  {{#each env}}
+     - name: {{@key}}
+       value: "{{this}}"
+  {{/each}}
   envFrom:
     - secret: flex-nada-token
   accessPolicy:
     outbound:
       external:
-        - host: {{nadaUrl}}
+  {{#each external-host}}
+        - host: {{this}}
+  {{/each}}
   gcp:
     permissions:
       - resource:

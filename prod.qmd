@@ -1,40 +1,25 @@
 ---
-title: "Hello world"
+title: "Team flex OKR T1 2024"
 format:
     html:
         self-contained: true
 ---
 
-> Team-flex datafortelling
+## KR1: Andelen som ikke finner det de leter etter på ditt sykefravær halveres
+
 
 ```{python}
-from datetime import datetime
+from datetime import datetime, timedelta
 
-print(datetime.now())
+print(f"Denne datafortellingen er sist oppdatert {datetime.now()}")
 
-import matplotlib.pyplot as plt
-
-# Data for plotting
-x = [1, 2, 3, 4, 5]
-y = [1, 2, 3, 4, 5]
-
-# Create the plot
-plt.plot(x, y)
-
-# Add title and labels
-plt.title('Hello World Graph')
-plt.xlabel('x-axis')
-plt.ylabel('y-axis')
-
-# Show the plot
-plt.show()
+import pandas as pd
 
 import os
 from google.cloud import bigquery
 credentials_path = os.path.expanduser('~/.config/gcloud/application_default_credentials.json')
 
 authenticated_locally = os.path.isfile(credentials_path)
-running_in_dev = os.getenv('NAIS_CLUSTER_NAME', '').lower() == 'dev-gcp'
 running_in_prod = os.getenv('NAIS_CLUSTER_NAME', '').lower() == 'prod-gcp'
 
 
@@ -46,36 +31,64 @@ if authenticated_locally or running_in_prod:  # Check if the file exists
     bigquery_client = bigquery.Client(project='flex-prod-af40')
 
     query = """
- 
 
-    WITH data_in_last_7_days AS (
-      SELECT svar
-      FROM `flex-prod-af40.flex_dataset.flexjar_feedback_view`
-      WHERE opprettet >= TIMESTAMP(DATE_SUB(CURRENT_DATE(), INTERVAL 7 DAY))
-      and feedbackId = 'ditt-sykefravaer-fant-du'
-    ),
+    SELECT
+      DATE_TRUNC(
+        DATE(`flex-prod-af40.flex_dataset.flexjar_feedback_view`.`opprettet`),
+        WEEK(MONDAY)
+      ) AS `uke_start`,
+      SUM(CASE WHEN `svar` = 'JA' THEN 1 ELSE 0 END) AS `antall_ja`,
+      SUM(CASE WHEN `svar` = 'NEI' THEN 1 ELSE 0 END) AS `antall_nei`,
+      SUM(CASE WHEN `svar` = 'FORBEDRING' THEN 1 ELSE 0 END) AS `antall_forbedring`
+    FROM
+      `flex-prod-af40.flex_dataset.flexjar_feedback_view`
+    WHERE
+      `flex-prod-af40.flex_dataset.flexjar_feedback_view`.`feedbackId` = 'ditt-sykefravaer-fant-du'
+    GROUP BY
+      `uke_start`
+    ORDER BY
+      `uke_start` DESC
 
-    no_counts AS (
-      SELECT COUNT(*) AS total,
-      COUNTIF(svar = 'NEI') AS nei_count,
-        COUNTIF(svar = 'FORBEDRING') AS forbedring_count
-      FROM data_in_last_7_days
-    )
-
-
-
-    SELECT ROUND(((nei_count + forbedring_count)  / total * 100), 1) AS percentage
-    FROM no_counts
     """
 
-    query_job = bigquery_client.query(query)
-    result = query_job.result()
+    # Anta at df er opprettet som følger:
+    df = bigquery_client.query(query).to_dataframe()
 
-    # Hvis spørringen din returnerer en rad, kan du hente denne raden
-    for row in result:
-        nei_forbedring_siste_7 = row.percentage
+    # Sørg for at 'uke_start' er i datetime format
+    df['uke_start'] = pd.to_datetime(df['uke_start'])
 
-    print(f'Prosent siste 7: {nei_forbedring_siste_7}')
+    # Definer periodene
+    periode1_start = pd.to_datetime('2024-02-04')
+    periode1_slutt = pd.to_datetime('2024-02-23')
+    periode2_start = df['uke_start'].max() - pd.Timedelta(weeks=2)  # Siste to ukene
+
+    # Beregn andeler for periodene
+    def beregn_andeler(subset):
+        subset = subset.copy()  # Lag en kopi for å unngå endring på en slice
+        subset['totalt'] = subset['antall_nei'] + subset['antall_forbedring'] + subset['antall_ja']
+        subset['andel_nei_forbedring'] = (subset['antall_nei'] + subset['antall_forbedring']) / subset['totalt']
+        return subset
+
+    # Filtre datasettet for de to periodene og beregn andeler
+    periode1_df = df[(df['uke_start'] >= periode1_start) & (df['uke_start'] <= periode1_slutt)]
+    periode2_df = df[df['uke_start'] >= periode2_start]
+
+    periode1_df = beregn_andeler(periode1_df)
+    periode2_df = beregn_andeler(periode2_df)
+
+    # Beregn gjennomsnittlig andel for hver periode
+    andel_periode1 = periode1_df['andel_nei_forbedring'].mean()
+    andel_periode2 = periode2_df['andel_nei_forbedring'].mean()
+
+    # Beregn hvor langt unna halvering dere er
+    mål_halvering = andel_periode1 / 2
+
+    # Vis resultatene
+    print(f"Andelen som svarte 'nei' eller 'forbedring' fra 2024-02-05 til 2024-02-23: {andel_periode1:.2%}")
+    print(f"Andelen som svarte 'nei' eller 'forbedring' de siste to ukene: {andel_periode2:.2%}")
+    print(f"Målet om halvering er: {mål_halvering:.2%}")
+
+
 
 else:
 

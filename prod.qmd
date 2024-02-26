@@ -11,7 +11,7 @@ format:
 ```{python}
 from datetime import datetime, timedelta
 
-print(f"Denne datafortellingen er sist oppdatert {datetime.now()}")
+print(f"Denne datafortellingen er sist oppdatert {datetime.now()}\n")
 
 import pandas as pd
 
@@ -33,10 +33,8 @@ if authenticated_locally or running_in_prod:  # Check if the file exists
     query = """
 
     SELECT
-      DATE_TRUNC(
-        DATE(`flex-prod-af40.flex_dataset.flexjar_feedback_view`.`opprettet`),
-        WEEK(MONDAY)
-      ) AS `uke_start`,
+      DATE(`flex-prod-af40.flex_dataset.flexjar_feedback_view`.`opprettet`)
+       AS `dag`,
       SUM(CASE WHEN `svar` = 'JA' THEN 1 ELSE 0 END) AS `antall_ja`,
       SUM(CASE WHEN `svar` = 'NEI' THEN 1 ELSE 0 END) AS `antall_nei`,
       SUM(CASE WHEN `svar` = 'FORBEDRING' THEN 1 ELSE 0 END) AS `antall_forbedring`
@@ -45,22 +43,24 @@ if authenticated_locally or running_in_prod:  # Check if the file exists
     WHERE
       `flex-prod-af40.flex_dataset.flexjar_feedback_view`.`feedbackId` = 'ditt-sykefravaer-fant-du'
     GROUP BY
-      `uke_start`
+      `dag`
     ORDER BY
-      `uke_start` DESC
+      `dag` DESC
 
     """
 
     # Anta at df er opprettet som følger:
     df = bigquery_client.query(query).to_dataframe()
 
-    # Sørg for at 'uke_start' er i datetime format
-    df['uke_start'] = pd.to_datetime(df['uke_start'])
+    # Sørg for at 'dag' er i datetime format
+    df['dag'] = pd.to_datetime(df['dag'])
 
+    baseline_start = '2024-02-04'
+    baseline_end = '2024-02-23'
     # Definer periodene
-    periode1_start = pd.to_datetime('2024-02-04')
-    periode1_slutt = pd.to_datetime('2024-02-23')
-    periode2_start = df['uke_start'].max() - pd.Timedelta(weeks=2)  # Siste to ukene
+    periode1_start = pd.to_datetime(baseline_start)
+    periode1_slutt = pd.to_datetime(baseline_end)
+    periode2_start = datetime.now() - pd.Timedelta(weeks=2)  # Siste to ukene
 
     # Beregn andeler for periodene
     def beregn_andeler(subset):
@@ -70,8 +70,8 @@ if authenticated_locally or running_in_prod:  # Check if the file exists
         return subset
 
     # Filtre datasettet for de to periodene og beregn andeler
-    periode1_df = df[(df['uke_start'] >= periode1_start) & (df['uke_start'] <= periode1_slutt)]
-    periode2_df = df[df['uke_start'] >= periode2_start]
+    periode1_df = df[(df['dag'] >= periode1_start) & (df['dag'] <= periode1_slutt)]
+    periode2_df = df[df['dag'] >= periode2_start]
 
     periode1_df = beregn_andeler(periode1_df)
     periode2_df = beregn_andeler(periode2_df)
@@ -84,9 +84,11 @@ if authenticated_locally or running_in_prod:  # Check if the file exists
     mål_halvering = andel_periode1 / 2
 
     # Vis resultatene
-    print(f"Andelen som svarte 'nei' eller 'forbedring' fra 2024-02-05 til 2024-02-23: {andel_periode1:.2%}")
-    print(f"Andelen som svarte 'nei' eller 'forbedring' de siste to ukene: {andel_periode2:.2%}")
-    print(f"Målet om halvering er: {mål_halvering:.2%}")
+    print(f"Nullpunktmålingen går fra {baseline_start} til {baseline_end}.")
+    print("Andelen som ikke finner det de leter etter på ditt sykefravær måles ved andelen \nflexjar feedbacks på ditt sykefravær hvor brukeren har svart at de ikke fant det \nde lurte på eller har foreslått en forbedring.")
+    print(f"\nAndelen som ikke fant det de lette etter i nullpunktsmålingen er {andel_periode1:.1%}")
+    print(f"Vårt mål er da {mål_halvering:.1%}")
+    print(f"\nAndelen som ikke fant det de lette etter de siste to ukene er {andel_periode2:.1%}")
 
 
 

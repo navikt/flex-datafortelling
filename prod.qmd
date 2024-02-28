@@ -118,8 +118,8 @@ if authenticated_locally or running_in_prod:  # Check if the file exists
     plt.plot(rolling_avg['dag'], rolling_avg['pct_nei'], label='Nei')
     plt.plot(rolling_avg['dag'], rolling_avg['pct_forbedring'], label='Forbedring')
 
-    baseline = 100-15.4
-    goal = 100-7.7
+    baseline = 100-(andel_periode1*100)
+    goal = 100-(mål_halvering*100)
     plt.axhline(y=baseline, color='gray', linestyle='--', label='Utgangspunkt')
     plt.axhline(y=goal, color='gold', linestyle='--', label='Mål')
 

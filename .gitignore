@@ -12,3 +12,7 @@ index_files/figure-html/
 .DS_Store
 
 *.ipynb
+
+*data_export.csv
+
+*data_export.xlsx

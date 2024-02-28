@@ -14,7 +14,7 @@ from datetime import datetime, timedelta
 print(f"Denne datafortellingen er sist oppdatert {datetime.now()}\n")
 
 import pandas as pd
-
+import matplotlib.pyplot as plt
 import os
 from google.cloud import bigquery
 credentials_path = os.path.expanduser('~/.config/gcloud/application_default_credentials.json')
@@ -90,6 +90,49 @@ if authenticated_locally or running_in_prod:  # Check if the file exists
     print(f"Vårt mål er da {mål_halvering:.1%}")
     print(f"\nAndelen som ikke fant det de lette etter de siste to ukene er {andel_periode2:.1%}")
 
+
+
+
+    # Reset av df før vi tegner graf
+    df = bigquery_client.query(query).to_dataframe()
+
+    df['dag'] = pd.to_datetime(df['dag'])
+
+    cutoff_date = pd.to_datetime('2024-02-04')
+
+    df = df[df['dag'] >= cutoff_date]
+
+    df['dag'] = pd.to_datetime(df['dag'])
+
+    df['total_votes'] = df[['antall_ja', 'antall_nei', 'antall_forbedring']].sum(axis=1)
+    df['pct_ja'] = (df['antall_ja'] / df['total_votes']) * 100
+    df['pct_nei'] = (df['antall_nei'] / df['total_votes']) * 100
+    df['pct_forbedring'] = (df['antall_forbedring'] / df['total_votes']) * 100
+
+    window_size = pd.Timedelta(days=7)
+    rolling_avg = df.rolling(window=window_size, on='dag').mean()
+    rolling_avg.head(20)
+
+    plt.figure(figsize=(12, 6))
+    plt.plot(rolling_avg['dag'], rolling_avg['pct_ja'], label='Ja')
+    plt.plot(rolling_avg['dag'], rolling_avg['pct_nei'], label='Nei')
+    plt.plot(rolling_avg['dag'], rolling_avg['pct_forbedring'], label='Forbedring')
+
+    baseline = 100-15.4
+    goal = 100-7.7
+    plt.axhline(y=baseline, color='gray', linestyle='--', label='Utgangspunkt')
+    plt.axhline(y=goal, color='gold', linestyle='--', label='Mål')
+
+    plt.xlabel('Dato')
+    plt.ylabel('Prosent (%)')
+    plt.title('Prosentvis fordeling av stemmer per dag (Rolling Average)')
+
+    plt.legend()
+
+    plt.xticks(rotation=45)
+
+    plt.tight_layout()
+    plt.show()
 
 
 else:

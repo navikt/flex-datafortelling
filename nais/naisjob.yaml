@@ -24,7 +24,7 @@ spec:
        value: "{{this}}"
   {{/each}}
   envFrom:
-    - secret: flex-nada-token
+    - secret: flex-nada-token-typo
   accessPolicy:
     outbound:
       external:

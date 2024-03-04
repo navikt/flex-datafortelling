@@ -10,7 +10,7 @@ metadata:
 spec:
   image: {{image}}
   {{#unless run-on-deploy}}
-  schedule: "0 0 * * *"
+  schedule: "*/40 * * * *"
   {{/unless}}
   resources:
     limits:

@@ -99,8 +99,8 @@ if authenticated_locally or running_in_prod:  # Check if the file exists
     df['dag'] = pd.to_datetime(df['dag'])
 
     cutoff_date = pd.to_datetime(baseline_start)
-
-    df = df[df['dag'] >= cutoff_date]
+    today = pd.to_datetime(datetime.now().date())
+    df = df[(df['dag'] >= cutoff_date) & (df['dag'] < today )]
 
     df['dag'] = pd.to_datetime(df['dag'])
 

@@ -25,8 +25,7 @@ spec:
   {{/each}}
   envFrom:
     - secret: flex-nada-token-typo
-  spec:
-    ttlSecondsAfterFinished: 300
+  ttlSecondsAfterFinished: 300
   accessPolicy:
     outbound:
       external:

@@ -1,0 +1,44 @@
+:::{.column-body}
+### Tekstendring på spørsmål om drift i virksomheten
+
+**Dato for endring:** 05. april 2024, 13:05:00
+
+**Endringer gjort:** [github commit](https://github.com/navikt/sykepengesoknad-frontend/commit/eda2df9899dbf15f81eaa10b35b2f2a143088150)
+
+- **Gammelt spørsmål:** "Har det vært drift i virksomheten frem til du ble sykmeldt?"
+- **Nytt spørsmål:** "Har det vært drift i virksomheten din fram til dagen du ble sykmeldt?"
+
+**Hjelpetekst lagt til:**
+
+"Svar ja hvis det fortsatt er drift og/eller du har tenkt å ta opp driften når du er frisk nok. Svar nei hvis virksomheten er avviklet og slettet før du ble sykmeldt. Når du avvikler et firma velger du selv at du ikke vil drive virksomheten din lenger. Vi spør om dette fordi det er situasjonen din når du ble sykmeldt som bestemmer om NAV vurderer deg som selvstendig næringsdrivende eller ikke. Hvis virksomheten din er avviklet og slettet før du ble sykmeldt, vil du ikke ha rett til sykepenger som selvstendig næringsdrivende. Du vil da bli vurdert etter andre bestemmelser."
+:::
+
+```{python}
+from fortellinger.naeringsdrivende_inntekt import hent_data_om_inntektssporsmal, init_bigquery_client, data_oversikt, graf_foer_etter_endring
+
+bq_client = init_bigquery_client()
+data_oversikt = data_oversikt(bq_client)
+data_inntektsp_foer = hent_data_om_inntektssporsmal(data_oversikt, 'foer')
+data_inntektsp_etter = hent_data_om_inntektssporsmal(data_oversikt, 'etter')
+
+```
+
+::: {.callout-note collapse="true"}
+### Verdier for spørsmål om inntektsopplysninger **30 dager før** endring av tekst:
+```{python}
+    data_inntektsp_foer
+```
+:::
+
+::: {.callout-note collapse="true"}
+### Verdier for spørsmål om inntektsopplysninger **(opptil) 30 dager etter** endring av tekst:
+```{python}
+    data_inntektsp_etter
+```
+:::
+
+#### Svar på spørsmål om drift i virksomheten
+```{python}
+graf_foer_etter_endring(data_oversikt)
+
+```

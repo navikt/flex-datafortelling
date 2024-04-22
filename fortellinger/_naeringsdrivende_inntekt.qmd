@@ -14,7 +14,8 @@
 :::
 
 ```{python}
-from fortellinger.naeringsdrivende_inntekt import hent_data_om_inntektssporsmal, init_bigquery_client, data_oversikt, graf_foer_etter_endring
+from fortellinger.naeringsdrivende_inntekt import hent_data_om_inntektssporsmal, data_oversikt
+from oppsett.bigquery import init_bigquery_client
 
 bq_client = init_bigquery_client()
 data_oversikt = data_oversikt(bq_client)
@@ -39,6 +40,7 @@ data_inntektsp_etter = hent_data_om_inntektssporsmal(data_oversikt, 'etter')
 
 #### Svar på spørsmål om drift i virksomheten
 ```{python}
+from fortellinger.naeringsdrivende_inntekt import graf_foer_etter_endring
 graf_foer_etter_endring(data_oversikt)
 
 ```

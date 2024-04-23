@@ -37,6 +37,8 @@ COPY publish.sh .
 COPY _quarto.yml .
 COPY dev.qmd .
 COPY prod.qmd .
+COPY fortellinger .
+COPY grafer_og_visninger .
 
 RUN chown python:python /home/python -R
 USER python

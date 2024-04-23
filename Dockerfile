@@ -39,6 +39,8 @@ COPY dev.qmd .
 COPY prod.qmd .
 COPY /fortellinger ./fortellinger
 COPY /grafer_og_visninger ./grafer_og_visninger
+COPY /oppsett ./oppsett
+COPY /queries ./queries
 
 RUN chown python:python /home/python -R
 USER python

@@ -18,6 +18,8 @@ google-cloud-bigquery = "^3.17.2"
 pandas = "^2.2.0"
 db-dtypes = "^1.2.0"
 pyyaml = "^6.0.1"
+seaborn = "^0.13.2"
+rich = "^13.7.1"
 
 [tool.poetry.group.dev.dependencies]
 black = "^24.3.0"

@@ -1,6 +1,6 @@
 from typing import Union
 
-from grafer_og_visninger.pie_chart import side_ved_side_pie_chart
+from grafer_og_visninger.pie_chart import side_ved_side_pie_chart, enkel_pie_chart
 from queries.naeringsdrivende_inntekt import naeringsdrivende_inntekt_foer_etter_endring, InntektsSporsmal, \
     question_tags
 from rich.markdown import Markdown
@@ -88,3 +88,47 @@ def graf_foer_etter_endring(data_oversikt):
                                 data_oversikt[InntektsSporsmal.INNTEKTSOPPLYSNINGER_DRIFT_VIRKSOMHETEN_NEI.value][
                                     'etter']
                             ])
+
+
+def etter_ja_nei_bytte_graf():
+    from oppsett.bigquery import init_bigquery_client
+
+    bq_client = init_bigquery_client()
+
+    def naeringsdrivende_inntekt_en_mnd_etter_ja_nei_bytte() -> str:
+        bq_tabell = '`flex-prod-af40.flex_dataset.sykepengesoknad_sporsmal_svar_view`'
+        question_tags = (
+        'INNTEKTSOPPLYSNINGER_VIRKSOMHETEN_AVVIKLET_NEI', 'INNTEKTSOPPLYSNINGER_VIRKSOMHETEN_AVVIKLET_JA')
+        query = f"""
+            SELECT
+                sykepengesoknad_uuid,
+                sporsmal_tag,
+                verdi,
+                sendt,
+            FROM
+                {bq_tabell}
+            WHERE
+                sporsmal_tag IN {question_tags}
+            AND sendt < TIMESTAMP_ADD(TIMESTAMP '2024-04-29 00:00:00', INTERVAL 30 DAY)
+        """
+
+        return query
+
+    query = naeringsdrivende_inntekt_en_mnd_etter_ja_nei_bytte()
+    df = bq_client.query(query).to_dataframe()
+    sporsmal_tag_counts = df['sporsmal_tag'].value_counts()
+
+    katekorier = sporsmal_tag_counts.index.tolist()
+    verdier = sporsmal_tag_counts.values.tolist()
+
+    kategorier_forenklet = [
+        'Nei' if v == 'INNTEKTSOPPLYSNINGER_VIRKSOMHETEN_AVVIKLET_NEI' else 'Ja' if v == 'INNTEKTSOPPLYSNINGER_VIRKSOMHETEN_AVVIKLET_JA' else v
+        for v in katekorier
+    ]
+  
+    return enkel_pie_chart(kategorier_forenklet, verdier, 'Etter vi byttet om ja/nei-spørsmålene')
+
+
+if __name__ == '__main__':
+    etter_ja_nei_bytte_graf()
+

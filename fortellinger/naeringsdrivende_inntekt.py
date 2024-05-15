@@ -125,10 +125,10 @@ def etter_ja_nei_bytte_graf():
         'Nei' if v == 'INNTEKTSOPPLYSNINGER_VIRKSOMHETEN_AVVIKLET_NEI' else 'Ja' if v == 'INNTEKTSOPPLYSNINGER_VIRKSOMHETEN_AVVIKLET_JA' else v
         for v in katekorier
     ]
-  
+
     return enkel_pie_chart(kategorier_forenklet, verdier, 'Etter vi byttet om ja/nei-spørsmålene')
 
 
 if __name__ == '__main__':
-    etter_ja_nei_bytte_graf()
+    pass
 

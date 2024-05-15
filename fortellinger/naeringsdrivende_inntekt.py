@@ -118,12 +118,12 @@ def etter_ja_nei_bytte_graf():
     df = bq_client.query(query).to_dataframe()
     sporsmal_tag_counts = df['sporsmal_tag'].value_counts()
 
-    katekorier = sporsmal_tag_counts.index.tolist()
+    kategorier = sporsmal_tag_counts.index.tolist()
     verdier = sporsmal_tag_counts.values.tolist()
 
     kategorier_forenklet = [
         'Nei' if v == 'INNTEKTSOPPLYSNINGER_VIRKSOMHETEN_AVVIKLET_NEI' else 'Ja' if v == 'INNTEKTSOPPLYSNINGER_VIRKSOMHETEN_AVVIKLET_JA' else v
-        for v in katekorier
+        for v in kategorier
     ]
 
     return enkel_pie_chart(kategorier_forenklet, verdier, 'Etter ja/nei bytte')

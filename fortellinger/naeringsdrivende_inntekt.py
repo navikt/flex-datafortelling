@@ -126,7 +126,7 @@ def etter_ja_nei_bytte_graf():
         for v in katekorier
     ]
 
-    return enkel_pie_chart(kategorier_forenklet, verdier, 'Etter vi byttet om ja/nei-spørsmålene')
+    return enkel_pie_chart(kategorier_forenklet, verdier, 'Etter ja/nei bytte')
 
 
 if __name__ == '__main__':

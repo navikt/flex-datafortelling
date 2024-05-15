@@ -46,7 +46,7 @@ graf_foer_etter_endring(data_oversikt)
 ```
 
 
-#### Svar på spørsmål om drift i virksomheten etter at ja og nei byttet plass og teksten ble skrevet om
+#### Svar på spørsmål om drift i virksomheten etter at ja og nei byttet plass
 ```{python}
 from fortellinger.naeringsdrivende_inntekt import etter_ja_nei_bytte_graf
 etter_ja_nei_bytte_graf()

@@ -16,3 +16,7 @@ index_files/figure-html/
 *data_export.csv
 
 *data_export.xlsx
+
+*.pyc
+
+*.zip

@@ -29,14 +29,14 @@ def naeringsdrivende_inntekt_foer_etter_endring() -> str:
             verdi,
             sendt,
             CASE
-                WHEN opprettet < TIMESTAMP '2024-04-05 13:05:00' AND opprettet >= TIMESTAMP_SUB(TIMESTAMP '2024-04-05 13:05:00', INTERVAL 30 DAY) THEN 'foer'        
-                WHEN opprettet >= TIMESTAMP '2024-04-05 13:05:00' AND opprettet < TIMESTAMP_ADD(TIMESTAMP '2024-04-05 13:05:00', INTERVAL 30 DAY) THEN 'etter'
+                WHEN sendt < TIMESTAMP '2024-04-05 13:05:00' AND sendt >= TIMESTAMP_SUB(TIMESTAMP '2024-04-05 13:05:00', INTERVAL 30 DAY) THEN 'foer'        
+                WHEN sendt >= TIMESTAMP '2024-04-05 13:05:00' AND sendt < TIMESTAMP_ADD(TIMESTAMP '2024-04-05 13:05:00', INTERVAL 30 DAY) THEN 'etter'
                 END AS period
         FROM
             {bq_tabell}
         WHERE
             sporsmal_tag IN {question_tags}
-        AND opprettet BETWEEN TIMESTAMP_SUB(TIMESTAMP '2024-04-05 13:05:00', INTERVAL 30 DAY) AND TIMESTAMP_ADD(TIMESTAMP '2024-04-05 13:05:00', INTERVAL 30 DAY)
+        AND sendt BETWEEN TIMESTAMP_SUB(TIMESTAMP '2024-04-05 13:05:00', INTERVAL 30 DAY) AND TIMESTAMP_ADD(TIMESTAMP '2024-04-05 13:05:00', INTERVAL 30 DAY)
         )
     
     SELECT

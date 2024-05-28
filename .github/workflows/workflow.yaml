@@ -29,6 +29,7 @@ jobs:
     with:
       image: ${{ needs.build-and-push.outputs.image }}
       prod-vars: nais/prod.yaml
+      prod-only: true
       nais-template: nais/naisjob.yaml
     secrets: inherit
 
@@ -39,5 +40,6 @@ jobs:
     with:
       image: ${{ needs.build-and-push.outputs.image }}
       prod-vars: nais/prod.yaml
+      prod-only: true
       nais-template: nais/naisjob.yaml
     secrets: inherit

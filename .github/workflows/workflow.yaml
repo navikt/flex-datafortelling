@@ -14,7 +14,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Push docker image to GAR
-        if: github.ref_name == 'main' || startsWith(github.ref_name, 'dev-')
+        if: github.ref_name == 'main'
         uses: nais/docker-build-push@v0
         id: docker-build-push
         with:
@@ -23,22 +23,21 @@ jobs:
           project_id: ${{ vars.NAIS_MANAGEMENT_PROJECT_ID }}
 
   nais-deploy:
+    if: github.ref == 'main'
     needs: [build-and-push]
     uses: navikt/flex-github-actions-workflows/.github/workflows/nais-deploy-dev-og-prod.yml@main
     with:
       image: ${{ needs.build-and-push.outputs.image }}
       prod-vars: nais/prod.yaml
-      dev-vars: nais/dev.yaml
       nais-template: nais/naisjob.yaml
     secrets: inherit
 
   nais-oneoff-deploy:
+    if: github.ref == 'main'
     needs: [build-and-push]
     uses: navikt/flex-github-actions-workflows/.github/workflows/nais-deploy-dev-og-prod.yml@main
     with:
       image: ${{ needs.build-and-push.outputs.image }}
       prod-vars: nais/prod.yaml
-      dev-vars: nais/dev.yaml
       nais-template: nais/naisjob.yaml
-      extra-vars: ",run-on-deploy=true"
     secrets: inherit

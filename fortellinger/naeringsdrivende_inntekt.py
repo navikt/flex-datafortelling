@@ -1,9 +1,10 @@
 from typing import Union
 
-from grafer_og_visninger.pie_chart import side_ved_side_pie_chart, enkel_pie_chart
-from queries.naeringsdrivende_inntekt import naeringsdrivende_inntekt_foer_etter_endring, InntektsSporsmal, \
-    question_tags
+import numpy as np
 from rich.markdown import Markdown
+
+from grafer_og_visninger.pie_chart import side_ved_side_pie_chart, enkel_pie_chart
+from queries.naeringsdrivende_inntekt import naeringsdrivende_inntekt_foer_etter_endring, InntektsSporsmal
 
 
 def get_data_for_tag(tag, data, perioder):
@@ -27,11 +28,14 @@ def data_oversikt(bigquery_client):
     naeringsdrivende_inntekt_query = naeringsdrivende_inntekt_foer_etter_endring()
     df = bigquery_client.query(naeringsdrivende_inntekt_query).to_dataframe()
 
+    df['sporsmal_tag'] = np.where(df['verdi'].isin(['JA', 'NEI']), df['sporsmal_tag'] + '_' + df['verdi'], df['sporsmal_tag'])
+    modified_tags = set(df['sporsmal_tag'])
+
     perioder = ['foer', 'etter']
-    periode_data = aggregate_data(df, perioder, question_tags)
+    periode_data = aggregate_data(df, perioder, modified_tags)
 
     # Generating data for all tags
-    return {tag: get_data_for_tag(tag, periode_data, perioder) for tag in question_tags}
+    return {tag: get_data_for_tag(tag, periode_data, perioder) for tag in modified_tags}
 
 
 def hent_data_om_inntektssporsmal(data_oversikt, periode: Union['foer', 'etter']) -> str:
@@ -45,13 +49,13 @@ def hent_data_om_inntektssporsmal(data_oversikt, periode: Union['foer', 'etter']
 - **Nei:** {nei_ny} svarte at de ikke var nye i arbeidslivet.
 
 **Varig endring i inntekten:**
-- **Ja:** {ja_varig_endring} var totalt antall som svarte ja på en varig endring i inntekten.
+- **Ja:** {ja_varig_endring} var totalt antall som svarte ja på en varig endring i inntekten. {nei_varig_endring} svarte nei.
 - **Nedleggelse av virksomheten:** {nedleggelse} var antallet som svarte at de hadde lagt ned virksomheten.
 - **Endret innsats:** {endret_innsats} svarte at de endret innsats i virksomheten.
 - **Omlagt virksomheten:** {omlagt} svarte at de hadde omlagt virksomheten.
 - **Endret markedssituasjon:** {endret_marked} svarte at det var endringer i markedssituasjonen.
 - **Andre grunner:** {andre_grunner} svarte at det var andre grunner for endring.
-- **Endring på minst 25%:** {endring_25_prosent} næringsdrivende rapporterte en endring på minst 25% i sin virksomhet.
+- **Endring på minst 25%:** {ja_endring_25_prosent} næringsdrivende rapporterte en endring på minst 25% i sin virksomhet. {nei_endring_25_prosent} svarte nei.
 """
 
     fortelling_med_data = fortelling_inntektsopplysninger.format(
@@ -59,7 +63,8 @@ def hent_data_om_inntektssporsmal(data_oversikt, periode: Union['foer', 'etter']
         nei_drift=str(data_oversikt['INNTEKTSOPPLYSNINGER_DRIFT_VIRKSOMHETEN_NEI'][periode]),
         ja_ny=str(data_oversikt['INNTEKTSOPPLYSNINGER_NY_I_ARBEIDSLIVET_JA'][periode]),
         nei_ny=str(data_oversikt['INNTEKTSOPPLYSNINGER_NY_I_ARBEIDSLIVET_NEI'][periode]),
-        ja_varig_endring=str(data_oversikt['INNTEKTSOPPLYSNINGER_VARIG_ENDRING'][periode]),
+        ja_varig_endring=str(data_oversikt['INNTEKTSOPPLYSNINGER_VARIG_ENDRING_JA'][periode]),
+        nei_varig_endring=str(data_oversikt['INNTEKTSOPPLYSNINGER_VARIG_ENDRING_NEI'][periode]),
         nedleggelse=str(
             data_oversikt['INNTEKTSOPPLYSNINGER_VARIG_ENDRING_BEGRUNNELSE_OPPRETTELSE_NEDLEGGELSE'][periode]),
         endret_innsats=str(data_oversikt['INNTEKTSOPPLYSNINGER_VARIG_ENDRING_BEGRUNNELSE_ENDRET_INNSATS'][periode]),
@@ -67,7 +72,8 @@ def hent_data_om_inntektssporsmal(data_oversikt, periode: Union['foer', 'etter']
         endret_marked=str(
             data_oversikt['INNTEKTSOPPLYSNINGER_VARIG_ENDRING_BEGRUNNELSE_ENDRET_MARKEDSSITUASJON'][periode]),
         andre_grunner=str(data_oversikt['INNTEKTSOPPLYSNINGER_VARIG_ENDRING_BEGRUNNELSE_ANNET'][periode]),
-        endring_25_prosent=str(data_oversikt['INNTEKTSOPPLYSNINGER_VARIG_ENDRING_25_PROSENT'][periode])
+        ja_endring_25_prosent=str(data_oversikt['INNTEKTSOPPLYSNINGER_VARIG_ENDRING_25_PROSENT_JA'][periode]),
+        nei_endring_25_prosent=str(data_oversikt['INNTEKTSOPPLYSNINGER_VARIG_ENDRING_25_PROSENT_NEI'][periode])
     )
 
     return Markdown(fortelling_med_data)

@@ -14,13 +14,13 @@
 :::
 
 ```{python}
-from fortellinger.naeringsdrivende_inntekt import hent_data_om_inntektssporsmal, data_oversikt
+from fortellinger.naeringsdrivende_inntekt import fortelling_om_inntektssporsmal, finn_antall_svar_for_tags_med_periode
 from oppsett.bigquery import init_bigquery_client
 
 bq_client = init_bigquery_client()
-data_oversikt = data_oversikt(bq_client)
-data_inntektsp_foer = hent_data_om_inntektssporsmal(data_oversikt, 'foer')
-data_inntektsp_etter = hent_data_om_inntektssporsmal(data_oversikt, 'etter')
+finn_antall_svar_for_tags_med_periode = finn_antall_svar_for_tags_med_periode(bq_client)
+data_inntektsp_foer = fortelling_om_inntektssporsmal(finn_antall_svar_for_tags_med_periode, 'foer')
+data_inntektsp_etter = fortelling_om_inntektssporsmal(finn_antall_svar_for_tags_med_periode, 'etter')
 
 ```
 
@@ -41,7 +41,7 @@ data_inntektsp_etter = hent_data_om_inntektssporsmal(data_oversikt, 'etter')
 #### Svar på spørsmål om drift i virksomheten
 ```{python}
 from fortellinger.naeringsdrivende_inntekt import graf_foer_etter_endring
-graf_foer_etter_endring(data_oversikt)
+graf_foer_etter_endring(finn_antall_svar_for_tags_med_periode)
 
 ```
 

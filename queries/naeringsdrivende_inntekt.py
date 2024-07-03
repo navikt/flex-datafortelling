@@ -61,3 +61,40 @@ def naeringsdrivende_inntekt_foer_etter_endring() -> str:
     """
 
     return query
+
+
+def naeringsdrivende_inntekt_i_2024() -> str:
+    bq_tabell = '`flex-prod-af40.flex_dataset.sykepengesoknad_sporsmal_svar_view`'
+    # noinspection SqlNoDataSourceInspection
+    query = f"""
+    WITH filtered_data AS (
+        SELECT
+            sykepengesoknad_uuid,
+            sporsmal_tag,
+            verdi,
+            sendt
+        FROM
+            {bq_tabell}
+        WHERE
+            sporsmal_tag IN ({', '.join([f"'{tag}'" for tag in question_tags])}, 'INNTEKTSOPPLYSNINGER_VIRKSOMHETEN_AVVIKLET_NEI', 'INNTEKTSOPPLYSNINGER_VIRKSOMHETEN_AVVIKLET_JA')
+            AND sendt BETWEEN '2024-01-01 00:00:00' AND '2024-12-31 23:59:59'
+    )
+    
+    SELECT
+        CASE 
+            WHEN sporsmal_tag IN ('INNTEKTSOPPLYSNINGER_VIRKSOMHETEN_AVVIKLET_NEI', 'INNTEKTSOPPLYSNINGER_DRIFT_VIRKSOMHETEN_JA') THEN 'INNTEKTSOPPLYSNINGER_VIRKSOMHETEN_AVVIKLET_NEI'
+            WHEN sporsmal_tag IN ('INNTEKTSOPPLYSNINGER_VIRKSOMHETEN_AVVIKLET_JA', 'INNTEKTSOPPLYSNINGER_DRIFT_VIRKSOMHETEN_NEI') THEN 'INNTEKTSOPPLYSNINGER_VIRKSOMHETEN_AVVIKLET_JA'
+            ELSE sporsmal_tag
+        END AS sporsmal_tag,
+        verdi,
+        COUNT(*) AS count
+    FROM
+        filtered_data
+    GROUP BY
+        sporsmal_tag,
+        verdi
+    ORDER BY
+        sporsmal_tag,
+        count DESC;
+"""
+    return query

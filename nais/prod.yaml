@@ -7,4 +7,3 @@ env:
   NADA_URL: data.nav.no
   QUARTO_ID: 87332165-41ff-49bc-bd34-a8747cefb3db
   GCP_TEAM_PROJECT_ID: flex-prod-af40
-  RUN_ON_DEPLOY: true

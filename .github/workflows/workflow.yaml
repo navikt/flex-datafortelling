@@ -42,4 +42,5 @@ jobs:
       prod-vars: nais/prod.yaml
       prod-only: "true"
       nais-template: nais/naisjob.yaml
+      extra-vars: RUN_ON_DEPLOY=true
     secrets: inherit

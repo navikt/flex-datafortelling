@@ -85,16 +85,16 @@ def naeringsdrivende_inntekt_i_2024() -> str:
             WHEN sporsmal_tag IN ('INNTEKTSOPPLYSNINGER_VIRKSOMHETEN_AVVIKLET_NEI', 'INNTEKTSOPPLYSNINGER_DRIFT_VIRKSOMHETEN_JA') THEN 'INNTEKTSOPPLYSNINGER_VIRKSOMHETEN_AVVIKLET_NEI'
             WHEN sporsmal_tag IN ('INNTEKTSOPPLYSNINGER_VIRKSOMHETEN_AVVIKLET_JA', 'INNTEKTSOPPLYSNINGER_DRIFT_VIRKSOMHETEN_NEI') THEN 'INNTEKTSOPPLYSNINGER_VIRKSOMHETEN_AVVIKLET_JA'
             ELSE sporsmal_tag
-        END AS combined_tag,
+        END AS sporsmal_tag,
         verdi,
         COUNT(*) AS count
     FROM
         filtered_data
     GROUP BY
-        combined_tag,
+        sporsmal_tag,
         verdi
     ORDER BY
-        combined_tag,
+        sporsmal_tag,
         count DESC;
 """
     return query

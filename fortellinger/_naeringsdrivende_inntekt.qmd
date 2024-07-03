@@ -14,13 +14,16 @@
 :::
 
 ```{python}
-from fortellinger.naeringsdrivende_inntekt import fortelling_om_inntektssporsmal, finn_antall_svar_for_tags_med_periode
+from fortellinger.naeringsdrivende_inntekt import fortelling_om_inntektssporsmal, finn_antall_svar_for_tags_med_periode, fortelling_i_2024
 from oppsett.bigquery import init_bigquery_client
 
 bq_client = init_bigquery_client()
-finn_antall_svar_for_tags_med_periode = finn_antall_svar_for_tags_med_periode(bq_client)
-data_inntektsp_foer = fortelling_om_inntektssporsmal(finn_antall_svar_for_tags_med_periode, 'foer')
-data_inntektsp_etter = fortelling_om_inntektssporsmal(finn_antall_svar_for_tags_med_periode, 'etter')
+antall_svar_for_tags_med_periode = finn_antall_svar_for_tags_med_periode(bq_client)
+data_inntektsp_foer = fortelling_om_inntektssporsmal(antall_svar_for_tags_med_periode, 'foer')
+data_inntektsp_etter = fortelling_om_inntektssporsmal(antall_svar_for_tags_med_periode, 'etter')
+
+finn_antall_svar_for_tags_uten_periode = finn_antall_svar_for_tags_med_periode(bq_client, True)
+data_inntektsp_2024 = fortelling_i_2024(finn_antall_svar_for_tags_uten_periode)
 
 ```
 
@@ -38,10 +41,17 @@ data_inntektsp_etter = fortelling_om_inntektssporsmal(finn_antall_svar_for_tags_
 ```
 :::
 
+::: {.callout-note collapse="true"}
+### Verdier for spørsmål om inntektsopplysninger i 2024:
+```{python}
+    data_inntektsp_2024
+```
+:::
+
 #### Svar på spørsmål om drift i virksomheten
 ```{python}
 from fortellinger.naeringsdrivende_inntekt import graf_foer_etter_endring
-graf_foer_etter_endring(finn_antall_svar_for_tags_med_periode)
+graf_foer_etter_endring(antall_svar_for_tags_med_periode)
 
 ```
 

@@ -1,14 +1,15 @@
-FROM python:3.12 AS build
+FROM python:3.12-bookworm
 
 RUN apt-get update && apt-get install -yq --no-install-recommends \
     curl \
     jq && \
-    ## Fjerner på grunn av rapporterte sårbarheter
-    apt-get purge -y imagemagick git-man golang && \
+    apt-get purge -y imagemagick git-man && \
     apt-get -y autoremove && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
+# For å installere Quarto for ARM (f.eks. Apple sillicon) i Docker-bygg
+# send inn dette argumentet til byggekommandoen: --build-arg CPU=arm64
 ARG CPU=amd64
 
 RUN QUARTO_VERSION=$(curl https://api.github.com/repos/quarto-dev/quarto-cli/releases/latest | jq '.tag_name' | sed -e 's/[\"v]//g') && \
@@ -29,14 +30,6 @@ COPY poetry.lock .
 RUN poetry config virtualenvs.create false
 RUN poetry install
 
-FROM python:3.12 AS final
-
-RUN groupadd -g 1069 python && \
-    useradd -r -u 1069 -g python python
-
-COPY --from=build /usr/local/bin/quarto /usr/local/bin/quarto
-COPY --from=build /home/python /home/python
-
 ENV DENO_DIR=/home/python/deno
 ENV XDG_CACHE_HOME=/home/python/cache
 ENV XDG_DATA_HOME=/home/python/share
@@ -52,5 +45,4 @@ COPY /queries ./queries
 
 RUN chown python:python /home/python -R
 USER python
-
 CMD ["./publish.sh"]

@@ -28,7 +28,7 @@ make recommended-settings
 
 Eller kjør `make` for en full oversikt over mulige kommandoer.
 
-## Installer python avhengigheter og oprett virtualenv
+## Installer python avhengigheter og opprett virtualenv
 Kjør så `poetry install` for å opprette et virtuelt miljø og installere avhengigheter. (Det er ofte praktisk å skru på virtualenv i prosjektfolder settingen til poetry, noe du kan gjøre før poetry install ved hjelp av `make recommended-settings`.)
 
 ```shell

@@ -3,7 +3,7 @@ FROM python:3.12-bookworm
 RUN apt-get update && apt-get install -yq --no-install-recommends \
     curl \
     jq && \
-    apt-get purge -y imagemagick git-man && \
+    apt-get purge -y imagemagick git-man golang && \
     apt-get -y autoremove && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*

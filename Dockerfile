@@ -3,14 +3,15 @@ FROM python:3.12-bookworm
 RUN apt-get update && apt-get install -yq --no-install-recommends \
     curl \
     jq && \
+    apt-get purge -y imagemagick git-man && \
+    apt-get -y autoremove && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
-# for å installere quarto for arm (f.eks. apple sillicon) i docker bygg
+# For å installere Quarto for ARM (f.eks. Apple sillicon) i Docker-bygg
 # send inn dette argumentet til byggekommandoen: --build-arg CPU=arm64
 ARG CPU=amd64
 
-# install quarto
 RUN QUARTO_VERSION=$(curl https://api.github.com/repos/quarto-dev/quarto-cli/releases/latest | jq '.tag_name' | sed -e 's/[\"v]//g') && \
     wget https://github.com/quarto-dev/quarto-cli/releases/download/v${QUARTO_VERSION}/quarto-${QUARTO_VERSION}-linux-${CPU}.tar.gz && \
     tar -xvzf quarto-${QUARTO_VERSION}-linux-${CPU}.tar.gz && \

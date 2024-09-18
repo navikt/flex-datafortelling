@@ -3,13 +3,14 @@ FROM python:3.12-bookworm
 RUN apt-get update && apt-get install -yq --no-install-recommends \
     curl \
     jq && \
-    apt-get purge -y imagemagick git-man golang && \
+    # Fjerner på grunn av sårbarheter.
+    apt-get purge -y imagemagick git-man golang libexpat1-dev && \
     apt-get -y autoremove && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
 # For å installere Quarto for ARM (f.eks. Apple sillicon) i Docker-bygg
-# send inn dette argumentet til byggekommandoen: --build-arg CPU=arm64
+# send inn dette argumentet til byggekommandoen: --build-arg CPU=arm64.
 ARG CPU=amd64
 
 RUN QUARTO_VERSION=$(curl https://api.github.com/repos/quarto-dev/quarto-cli/releases/latest | jq '.tag_name' | sed -e 's/[\"v]//g') && \

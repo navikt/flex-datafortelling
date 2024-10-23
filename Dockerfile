@@ -1,4 +1,4 @@
-FROM python:3.12.7-bookworm
+FROM python:3.13.0-bookworm
 
 RUN apt-get update && apt-get install -yq --no-install-recommends \
     curl \

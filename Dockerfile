@@ -28,6 +28,7 @@ RUN ln -s /quarto/bin/quarto /usr/local/bin/quarto
 
 # Installerer nødvendige pakker og fjerner sårbarheter
 RUN apt-get update && apt-get install -yq --no-install-recommends \
+      curl \
     # Legg til nødvendige pakker her \
     && apt-get purge -y imagemagick git-man golang libexpat1-dev \
     && apt-get -y autoremove \

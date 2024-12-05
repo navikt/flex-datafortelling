@@ -1,5 +1,5 @@
 # Byggestadium: Laster ned og pakker ut Quarto
-FROM python:3.12.7-bookworm AS builder
+FROM python:3.13.1-bookworm AS builder
 
 # For å installere Quarto for ARM (f.eks. Apple silicon) i Docker-bygg
 # send inn dette argumentet til byggekommandoen: --build-arg CPU=arm64.
@@ -20,7 +20,7 @@ RUN if [ -z "$QUARTO_VERSION" ]; then \
     mv quarto-${QUARTO_VERSION} /quarto
 
 # Sluttstadium: Setter opp miljøet og kjører applikasjonen
-FROM python:3.12.7-slim
+FROM python:3.13.1-slim
 
 # Kopierer Quarto fra builder-stadiet
 COPY --from=builder /quarto /quarto

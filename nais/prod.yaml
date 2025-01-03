@@ -3,6 +3,7 @@ memory: 600Mi
 gcpProjectId: flex-prod-af40
 external-host:
   - data.nav.no
+  - cdnjs.cloudflare.com
 env:
   NADA_URL: data.nav.no
   QUARTO_ID: 87332165-41ff-49bc-bd34-a8747cefb3db

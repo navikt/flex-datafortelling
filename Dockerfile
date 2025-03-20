@@ -44,6 +44,7 @@ WORKDIR /home/python
 # Installerer Poetry og avhengigheter
 RUN pip install poetry
 COPY pyproject.toml .
+COPY README.md .
 COPY poetry.lock .
 RUN poetry config virtualenvs.create false
 RUN poetry install

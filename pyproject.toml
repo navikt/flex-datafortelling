@@ -5,6 +5,7 @@ description = ""
 authors = ["NAV-IT"]
 readme = "README.md"
 license = "MIT"
+package-mode = false
 
 [tool.poetry.dependencies]
 python = "^3.13"

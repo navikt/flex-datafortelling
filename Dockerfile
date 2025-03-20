@@ -27,8 +27,8 @@ COPY --from=builder /quarto /quarto
 RUN ln -s /quarto/bin/quarto /usr/local/bin/quarto
 
 # Installerer nødvendige pakker og fjerner sårbarheter
-RUN apt-get update && apt-get install -yq --no-install-recommends wget \
-    && apt-get remove --purge -y imagemagick git-man golang golang-go libexpat1-dev \
+RUN apt-get update && apt-get install -yq --no-install-recommends \
+    && apt-get remove --purge -y imagemagick git-man golang libexpat1-dev \
     && apt-get -y autoremove \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*

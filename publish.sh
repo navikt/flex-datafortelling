@@ -13,7 +13,7 @@ else
     quarto render prod.qmd --output index.html
 fi
 
-response=$(curl -X PUT -F index.html=@index.html "https://${NADA_URL}/quarto/update/${QUARTO_ID}" -H "Authorization:Bearer ${NADA_TOKEN}")
+response=$(wget --method=PUT --header="Authorization:Bearer ${NADA_TOKEN}" --body-file=index.html "https://${NADA_URL}/quarto/update/${QUARTO_ID}")
 
 # Store the status code of the last executed command
 status=$?

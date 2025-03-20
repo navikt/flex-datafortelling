@@ -20,7 +20,7 @@ RUN if [ -z "$QUARTO_VERSION" ]; then \
     mv quarto-${QUARTO_VERSION} /quarto
 
 # Sluttstadium: Setter opp miljøet og kjører applikasjonen
-FROM python:3.13.2-slim
+FROM python:3.13.2-slim-bookworm
 
 # Kopierer Quarto fra builder-stadiet
 COPY --from=builder /quarto /quarto
@@ -30,7 +30,7 @@ RUN ln -s /quarto/bin/quarto /usr/local/bin/quarto
 RUN apt-get update && apt-get install -yq --no-install-recommends \
       curl \
     && apt-get upgrade -y curl \
-    && apt-get purge -y imagemagick git-man golang libexpat1-dev \
+    && apt-get remove --purge -y imagemagick git-man golang golang-go libexpat1-dev \
     && apt-get -y autoremove \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*

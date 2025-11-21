@@ -12,7 +12,7 @@ jobs:
     outputs:
       image: ${{ steps.docker-build-push.outputs.image }}
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
       - name: Push docker image to GAR
         if: github.ref_name == 'main'
         uses: nais/docker-build-push@v0

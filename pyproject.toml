@@ -22,6 +22,7 @@ db-dtypes = "^1.4.3"
 pyyaml = "^6.0.2"
 seaborn = "^0.13.2"
 rich = "^14.0.0"
+fonttools = ">=4.60.2"
 
 [tool.poetry.group.dev.dependencies]
 black = "^25.1.0"

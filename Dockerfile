@@ -1,14 +1,13 @@
 # Byggestadium: Laster ned og pakker ut Quarto
 FROM europe-north1-docker.pkg.dev/cgr-nav/pull-through/nav.no/python:3.13.11-dev AS builder
+USER root
 
 # For å installere Quarto for ARM (f.eks. Apple silicon) i Docker-bygg
 # send inn dette argumentet til byggekommandoen: --build-arg CPU=arm64.
 ARG CPU=amd64
 ARG QUARTO_VERSION
 
-RUN apt-get update && apt-get install -yq --no-install-recommends \
-    curl \
-    jq
+RUN apk add --no-cache curl jq wget
 
 # Henter Quarto-versjonen hvis ikke angitt
 RUN if [ -z "$QUARTO_VERSION" ]; then \
@@ -21,23 +20,18 @@ RUN if [ -z "$QUARTO_VERSION" ]; then \
 
 # Sluttstadium: Setter opp miljøet og kjører applikasjonen
 FROM europe-north1-docker.pkg.dev/cgr-nav/pull-through/nav.no/python:3.13.11-dev
+USER root
 
 # Kopierer Quarto fra builder-stadiet
 COPY --from=builder /quarto /quarto
 RUN ln -s /quarto/bin/quarto /usr/local/bin/quarto
 
-# Installerer nødvendige pakker og fjerner sårbarheter
-RUN apt-get update && apt-get install -yq --no-install-recommends \
-      curl \
-    && apt-get upgrade -y curl \
-    && apt-get remove --purge -y imagemagick git-man golang golang-go libexpat1-dev \
-    && apt-get -y autoremove \
-    && apt-get clean \
-    && rm -rf /var/lib/apt/lists/*
+# Installerer nødvendige pakker
+RUN apk add --no-cache curl
 
 # Oppretter brukeren
-RUN groupadd -g 1069 python && \
-    useradd -r -u 1069 -g python python
+RUN addgroup -g 1069 python && \
+    adduser -D -u 1069 -G python python
 
 WORKDIR /home/python
 

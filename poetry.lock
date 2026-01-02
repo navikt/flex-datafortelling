@@ -445,20 +445,20 @@ tests = ["pytest", "pytest-cov", "pytest-xdist"]
 
 [[package]]
 name = "db-dtypes"
-version = "1.4.3"
+version = "1.5.0"
 description = "Pandas Data Types for SQL systems (BigQuery, Spanner)"
 optional = false
 python-versions = ">=3.9"
 groups = ["main"]
 files = [
-    {file = "db_dtypes-1.4.3-py3-none-any.whl", hash = "sha256:a1c92b819af947fae1701d80a71f2a0eac08f825ca52cf0c68aeba80577ae966"},
-    {file = "db_dtypes-1.4.3.tar.gz", hash = "sha256:d3cb08c32939d24e05501f17694be8c1c54cfb4620d61fb56fb311e8c3d8885e"},
+    {file = "db_dtypes-1.5.0-py3-none-any.whl", hash = "sha256:abdbb2e4eb965800ed6f98af0c5c1cafff9063ace09114be2d26a7f046be2c8a"},
+    {file = "db_dtypes-1.5.0.tar.gz", hash = "sha256:ad9e94243f53e104bc77dbf9ae44b580d83a770d3694483aba59c9767966daa5"},
 ]
 
 [package.dependencies]
-numpy = ">=1.24.0"
+numpy = {version = ">=1.24.0", markers = "python_version != \"3.10\""}
 packaging = ">=24.2.0"
-pandas = ">=1.5.3"
+pandas = ">=1.5.3,<3.0.0"
 pyarrow = ">=13.0.0"
 
 [[package]]
@@ -2658,4 +2658,4 @@ files = [
 [metadata]
 lock-version = "2.1"
 python-versions = "^3.13"
-content-hash = "9719903c24b7b77efd7a0f8cfa69ed7a50fb3cda162fc693df10d94cb4cbc238"
+content-hash = "8fc2f6fbba35936b899bfee39633d4981349b07733f3a8069c8ec2c76bfbf31f"

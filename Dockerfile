@@ -1,5 +1,5 @@
 # Byggestadium: Laster ned og pakker ut Quarto
-FROM europe-north1-docker.pkg.dev/cgr-nav/pull-through/nav.no/python:3.13.11 AS builder
+FROM europe-north1-docker.pkg.dev/cgr-nav/pull-through/nav.no/python:3.13.11-dev AS builder
 
 # For å installere Quarto for ARM (f.eks. Apple silicon) i Docker-bygg
 # send inn dette argumentet til byggekommandoen: --build-arg CPU=arm64.
@@ -20,7 +20,7 @@ RUN if [ -z "$QUARTO_VERSION" ]; then \
     mv quarto-${QUARTO_VERSION} /quarto
 
 # Sluttstadium: Setter opp miljøet og kjører applikasjonen
-FROM europe-north1-docker.pkg.dev/cgr-nav/pull-through/nav.no/python:3.13.11
+FROM europe-north1-docker.pkg.dev/cgr-nav/pull-through/nav.no/python:3.13.11-dev
 
 # Kopierer Quarto fra builder-stadiet
 COPY --from=builder /quarto /quarto

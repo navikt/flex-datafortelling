@@ -59,4 +59,4 @@ COPY /queries ./queries
 
 RUN chown python:python /home/python -R
 USER python
-CMD ["./publish.sh"]
+ENTRYPOINT ["./publish.sh"]

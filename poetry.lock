@@ -746,14 +746,14 @@ tqdm = ["tqdm (>=4.23.4,<5.0.0)"]
 
 [[package]]
 name = "google-cloud-bigquery-storage"
-version = "2.36.1"
+version = "2.36.2"
 description = "Google Cloud Bigquery Storage API client library"
 optional = false
 python-versions = ">=3.7"
 groups = ["main"]
 files = [
-    {file = "google_cloud_bigquery_storage-2.36.1-py3-none-any.whl", hash = "sha256:99ad6b8810d028f0cf368ea0cc54b3cda20e856f05eb4cda51f1db2a70692286"},
-    {file = "google_cloud_bigquery_storage-2.36.1.tar.gz", hash = "sha256:fd3917584a41f7a9d9c633b31ff43103869b108224e8a4b765537eb1ea83148c"},
+    {file = "google_cloud_bigquery_storage-2.36.2-py3-none-any.whl", hash = "sha256:823a73db0c4564e8ad3eedcfd5049f3d5aa41775267863b5627211ec36be2dbf"},
+    {file = "google_cloud_bigquery_storage-2.36.2.tar.gz", hash = "sha256:ad49d8c09ad6cd82da4efe596fcfcdbc1458bf05b93915e3c5c00f1e700ae128"},
 ]
 
 [package.dependencies]
@@ -2663,4 +2663,4 @@ files = [
 [metadata]
 lock-version = "2.1"
 python-versions = "^3.13"
-content-hash = "dd95627c9ff80e25b234e5fc002fe1fb0286b0fbc3eb0930a2b2834d8decf01b"
+content-hash = "91ea823f6a49a43e92386a3f37329c5af53dcf652185c3339538011539865b6c"

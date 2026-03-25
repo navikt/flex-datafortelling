@@ -26,8 +26,8 @@ USER root
 COPY --from=builder /quarto /quarto
 RUN ln -s /quarto/bin/quarto /usr/local/bin/quarto
 
-# Installerer nødvendige pakker
-RUN apk add --no-cache curl
+# Installerer nødvendige pakker og oppgraderer go for å fikse CVE-2025-68121
+RUN apk add --no-cache curl && apk upgrade --no-cache go
 
 # Oppretter brukeren
 RUN addgroup -g 1069 python && \

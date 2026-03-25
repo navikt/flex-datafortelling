@@ -22,6 +22,8 @@ RUN if [ -z "$QUARTO_VERSION" ]; then \
 FROM europe-north1-docker.pkg.dev/cgr-nav/pull-through/nav.no/python:3.14.3-dev
 USER root
 
+RUN apk upgrade --no-cache
+
 # Kopierer Quarto fra builder-stadiet
 COPY --from=builder /quarto /quarto
 RUN ln -s /quarto/bin/quarto /usr/local/bin/quarto

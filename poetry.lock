@@ -445,20 +445,20 @@ tests = ["pytest", "pytest-cov", "pytest-xdist"]
 
 [[package]]
 name = "db-dtypes"
-version = "1.6.0"
+version = "1.7.0"
 description = "Pandas Data Types for SQL systems (BigQuery, Spanner)"
 optional = false
-python-versions = ">=3.9"
+python-versions = ">=3.10"
 groups = ["main"]
 files = [
-    {file = "db_dtypes-1.6.0-py3-none-any.whl", hash = "sha256:03f0ff5798fa5e407f07e84de2d619cbc363b8dcc40104825a85519793ffee8d"},
-    {file = "db_dtypes-1.6.0.tar.gz", hash = "sha256:4ba87b15cc972a7cc0aed2b7483e0823c7765eca88128453f52c88c5e0f4ae46"},
+    {file = "db_dtypes-1.7.0-py3-none-any.whl", hash = "sha256:c80a1d9bc7dda3cc63638a3f2cf4ec27af50b809ec2d92b8a94cb9d8438cdc76"},
+    {file = "db_dtypes-1.7.0.tar.gz", hash = "sha256:30951c7cda9e5455e43636eebe041c9a637ff28bc49a95d82cb68759d7625467"},
 ]
 
 [package.dependencies]
 numpy = {version = ">=1.24.0", markers = "python_version != \"3.10\""}
 packaging = ">=24.2.0"
-pandas = ">=1.5.3,<3.0.0"
+pandas = ">=1.5.3,<4.0.0"
 pyarrow = ">=13.0.0"
 
 [[package]]

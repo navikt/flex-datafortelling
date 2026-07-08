@@ -24,6 +24,7 @@ seaborn = "^0.13.2"
 rich = ">=14.3.2,<16.0.0"
 fonttools = ">=4.60.2"
 pandas = ">=2.2.4"
+tzdata = ">=2026.2"
 
 [tool.poetry.group.dev.dependencies]
 black = "^26.3.1"
